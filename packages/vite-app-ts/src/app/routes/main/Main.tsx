@@ -12,7 +12,7 @@ import { transactor } from 'eth-components/functions';
 import { ethers } from 'ethers';
 
 import { useEventListener } from 'eth-hooks';
-import { MainPageMenu, MainPageContracts, MainPageFooter, MainPageHeader, Staker as StakerUI } from './components';
+import { MainPageMenu, MainPageContracts, MainPageFooter, MainPageHeader, Staker as StakerUI, CustomStaker as CustomStakerUI} from './components';
 import { useAppContracts } from '~~/app/routes/main/hooks/useAppContracts';
 import { useScaffoldProviders as useScaffoldAppProviders } from '~~/app/routes/main/hooks/useScaffoldAppProviders';
 import { useBurnerFallback } from '~~/app/routes/main/hooks/useBurnerFallback';
@@ -104,6 +104,9 @@ export const Main: FC = () => {
         <MainPageMenu route={route} setRoute={setRoute} />
         <Switch>
           <Route exact path="/">
+            <CustomStakerUI mainnetProvider={scaffoldAppProviders.mainnetProvider} />
+          </Route>
+          <Route exact path="/default">
             <StakerUI mainnetProvider={scaffoldAppProviders.mainnetProvider} />
           </Route>
           <Route exact path="/debug">

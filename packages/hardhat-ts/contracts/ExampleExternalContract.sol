@@ -5,8 +5,11 @@ pragma solidity >=0.8.0 <0.9.0;
 contract ExampleExternalContract {
 
     bool public completed;
-
     function complete() public payable {
         completed = true;
+    }
+
+    function reset() public payable {
+        completed = false;
     }
 }

@@ -20,6 +20,15 @@ export const MainPageMenu: FC<IMainPageMenuProps> = (props) => (
           props.setRoute('/');
         }}
         to="/">
+        Custom Staker UI
+      </Link>
+    </Menu.Item>
+    <Menu.Item key="/default">
+      <Link
+        onClick={() => {
+          props.setRoute('/default');
+        }}
+        to="/default">
         StakerUI
       </Link>
     </Menu.Item>
