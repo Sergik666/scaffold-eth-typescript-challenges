@@ -1,19 +1,49 @@
 pragma solidity >=0.8.0 <0.9.0;
 // SPDX-License-Identifier: MIT
 
-import "@openzeppelin/contracts/access/Ownable.sol";
+import '@openzeppelin/contracts/access/Ownable.sol';
 import './YourToken.sol';
 
-contract Vendor {
+contract Vendor is Ownable {
   YourToken public yourToken;
 
-  constructor(address tokenAddress) public {
+  uint256 public constant c_tokensPerEth = 100;
+
+  event BuyTokens(address buyer, uint256 amountOfEth, uint256 amountOfTokens);
+  event SellTokens(address saller, uint256 amountOfEth, uint256 amountOfTokens);
+
+  constructor(address tokenAddress) {
     yourToken = YourToken(tokenAddress);
   }
 
-  // ToDo: create a payable buyTokens() function:
+  function buyTokens() public payable {
+    require(msg.value > 0, 'No ETH for buy tokens');
+    uint256 amountOfTokens = msg.value * c_tokensPerEth;
+    yourToken.transfer(msg.sender, amountOfTokens);
+    emit BuyTokens(msg.sender, msg.value, amountOfTokens);
+  }
 
-  // ToDo: create a withdraw() function that lets the owner withdraw ETH
+  function withdraw() public payable onlyOwner {
+    uint256 balance = address(this).balance;
+    require(balance > 0, 'No ETH on contract balance');
+    payable(msg.sender).transfer(balance);
+  }
 
-  // ToDo: create a sellTokens() function:
+  function sellTokens(uint256 amountOfTokens) public payable {
+    uint256 amountOfEth = amountOfTokens / c_tokensPerEth;
+    uint256 balance = address(this).balance;
+    require(balance >= amountOfEth, 'No ETH on contract balance');
+
+    require(yourToken.balanceOf(msg.sender) >= amountOfTokens, 'No TOKEN balance on saller');
+
+    yourToken.transferFrom(msg.sender, address(this), amountOfTokens);
+
+    payable(msg.sender).transfer(amountOfEth);
+
+    emit SellTokens(msg.sender, amountOfEth, amountOfTokens);
+  }
+
+  function tokensPerEth() public pure returns (uint256) {
+    return c_tokensPerEth;
+  }
 }

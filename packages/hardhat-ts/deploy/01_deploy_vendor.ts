@@ -13,24 +13,24 @@ const func: DeployFunction = async (hre: HardhatRuntimeEnvironmentExtended) => {
 
   // Todo: deploy the vendor
 
-  // await deploy('Vendor', {
-  //   // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
-  //   from: deployer,
-  //   args: [yourToken.address],
-  //   log: true,
-  // });
+  await deploy('Vendor', {
+    // Learn more about args here: https://www.npmjs.com/package/hardhat-deploy#deploymentsdeploy
+    from: deployer,
+    args: [yourToken.address],
+    log: true,
+  });
 
-  // const vendor = await ethers.getContract("Vendor", deployer);
+  const vendor = await ethers.getContract("Vendor", deployer);
 
   // Todo: transfer the tokens to the vendor
-  // console.log("\n 🏵  Sending all 1000 tokens to the vendor...\n");
+  console.log("\n 🏵  Sending all 1000 tokens to the vendor...\n");
 
-  // await yourToken.transfer(
-  //   vendor.address,
-  //   ethers.utils.parseEther("1000")
-  // );
+  await yourToken.transfer(
+    vendor.address,
+    ethers.utils.parseEther("1000")
+  );
 
-  // await vendor.transferOwnership("**YOUR FRONTEND ADDRESS**");
+  await vendor.transferOwnership("0xBBb2E9f122a0eE4D492F00932B6AB74f313DA3a0");
 };
 export default func;
 func.tags = ['Vendor'];
